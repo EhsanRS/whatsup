@@ -1,0 +1,318 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+# ── Parse arguments ──
+
+MOOD="" GIF_URL="" PDF_PATH="" LINK_URL="" REPLY_TO="" COMMAND="" CONTENT="" EDIT_ID="" DELETE_ID=""
+TAGS=()
+
+usage() {
+    cat <<'USAGE'
+Usage: ./whatsup [OPTIONS] "content"
+
+Commands:
+  --init             Initialize repository
+  --serve            Start local preview server
+  --list             Show today's entries
+
+Options:
+  --mood <mood>      Set mood (focused, happy, tired, excited, etc.)
+  --gif <url>        Attach a GIF
+  --pdf <path>       Attach a PDF file
+  --link <url>       Share a link
+  --reply <id>       Reply to an entry
+  --tag <tag>        Add a tag (can use multiple times)
+  --edit <id>        Edit an entry's content
+  --delete <id>      Delete an entry
+USAGE
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --init)    COMMAND="init";   shift ;;
+        --serve)   COMMAND="serve";  shift ;;
+        --list)    COMMAND="list";   shift ;;
+        --edit)    COMMAND="edit";   EDIT_ID="${2:-}";   shift 2 || usage ;;
+        --delete)  COMMAND="delete"; DELETE_ID="${2:-}"; shift 2 || usage ;;
+        --mood)    MOOD="${2:-}";      shift 2 || usage ;;
+        --gif)     GIF_URL="${2:-}";   shift 2 || usage ;;
+        --pdf)     PDF_PATH="${2:-}";  shift 2 || usage ;;
+        --link)    LINK_URL="${2:-}";  shift 2 || usage ;;
+        --reply)   REPLY_TO="${2:-}";  shift 2 || usage ;;
+        --tag)     TAGS+=("${2:-}");   shift 2 || usage ;;
+        --help|-h) usage ;;
+        -*)        echo "Unknown option: $1"; usage ;;
+        *)         CONTENT="$1"; shift ;;
+    esac
+done
+
+# ── Commands ──
+
+if [[ "$COMMAND" == "init" ]]; then
+    mkdir -p data/entries assets
+    [[ -f data/index.json ]] || echo '[]' > data/index.json
+    [[ -f config.json ]] || cat > config.json << 'EOF'
+{
+  "name": "Ehsan",
+  "bio": "What I'm up to",
+  "avatar": "",
+  "links": [],
+  "timezone": "America/Los_Angeles"
+}
+EOF
+    echo "Initialized whatsup"
+    exit 0
+fi
+
+if [[ "$COMMAND" == "serve" ]]; then
+    echo "http://localhost:8000"
+    python3 -m http.server 8000
+    exit 0
+fi
+
+if [[ "$COMMAND" == "list" ]]; then
+    python3 << 'PYEOF'
+import json, os
+from datetime import datetime
+
+today = datetime.now().strftime("%Y-%m-%d")
+path = f"data/entries/{today}.json"
+if not os.path.exists(path):
+    print("No entries for today.")
+    exit(0)
+with open(path) as f:
+    entries = json.load(f)
+if not entries:
+    print("No entries for today.")
+    exit(0)
+print(f"Entries for {today}:\n")
+for e in entries:
+    ts = datetime.fromisoformat(e["ts"].replace("Z", "+00:00"))
+    t = ts.strftime("%H:%M")
+    c = e["content"][:80] if e.get("content") else ""
+    mood = f" [{e['mood']}]" if e.get("mood") else ""
+    print(f"  [{t}] ({e['id']}){mood} {c}")
+PYEOF
+    exit 0
+fi
+
+if [[ "$COMMAND" == "delete" ]]; then
+    [[ -z "$DELETE_ID" ]] && { echo "Error: --delete requires an entry ID"; exit 1; }
+    WU_DELETE_ID="$DELETE_ID" python3 << 'PYEOF'
+import json, os, sys
+from datetime import datetime
+
+delete_id = os.environ["WU_DELETE_ID"]
+
+for fname in sorted(os.listdir("data/entries")):
+    if not fname.endswith(".json"): continue
+    fpath = f"data/entries/{fname}"
+    with open(fpath) as f:
+        entries = json.load(f)
+    before = len(entries)
+    entries = [e for e in entries if e["id"] != delete_id]
+    if len(entries) == before: continue
+
+    date = fname.replace(".json", "")
+    if entries:
+        with open(fpath, "w") as f:
+            json.dump(entries, f, indent=2)
+        with open("data/index.json") as f:
+            manifest = json.load(f)
+        for m in manifest:
+            if m["date"] == date:
+                m["count"] = len(entries)
+                times = [datetime.fromisoformat(e["ts"].replace("Z","+00:00")) for e in entries]
+                m["firstEntry"] = min(times).strftime("%H:%M")
+                m["lastEntry"] = max(times).strftime("%H:%M")
+                break
+        with open("data/index.json", "w") as f:
+            json.dump(manifest, f, indent=2)
+    else:
+        os.remove(fpath)
+        with open("data/index.json") as f:
+            manifest = json.load(f)
+        manifest = [m for m in manifest if m["date"] != date]
+        with open("data/index.json", "w") as f:
+            json.dump(manifest, f, indent=2)
+
+    print(f"Deleted {delete_id}")
+    sys.exit(0)
+
+print(f"Error: entry {delete_id} not found", file=sys.stderr)
+sys.exit(1)
+PYEOF
+    git add data/ && git commit -m "whatsup: delete $DELETE_ID" && git push
+    exit 0
+fi
+
+if [[ "$COMMAND" == "edit" ]]; then
+    [[ -z "$EDIT_ID" ]] && { echo "Error: --edit requires an entry ID"; exit 1; }
+    [[ -z "$CONTENT" ]] && { echo "Error: --edit requires content"; exit 1; }
+    WU_EDIT_ID="$EDIT_ID" WU_CONTENT="$CONTENT" python3 << 'PYEOF'
+import json, os, sys
+from datetime import datetime, timezone
+
+edit_id = os.environ["WU_EDIT_ID"]
+new_content = os.environ["WU_CONTENT"]
+
+for fname in sorted(os.listdir("data/entries")):
+    if not fname.endswith(".json"): continue
+    fpath = f"data/entries/{fname}"
+    with open(fpath) as f:
+        entries = json.load(f)
+    for e in entries:
+        if e["id"] == edit_id:
+            e["content"] = new_content
+            e["ts"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            with open(fpath, "w") as f:
+                json.dump(entries, f, indent=2)
+            print(f"Updated {edit_id}")
+            sys.exit(0)
+
+print(f"Error: entry {edit_id} not found", file=sys.stderr)
+sys.exit(1)
+PYEOF
+    git add data/ && git commit -m "whatsup: edit $EDIT_ID" && git push
+    exit 0
+fi
+
+# ── Post (default command) ──
+
+[[ -z "$CONTENT" ]] && { echo "Error: content is required"; usage; }
+
+# Build tags JSON
+TAGS_JSON="[]"
+if [[ ${#TAGS[@]} -gt 0 ]]; then
+    TAGS_JSON=$(printf '%s\n' "${TAGS[@]}" | python3 -c "import sys,json; print(json.dumps([l.strip() for l in sys.stdin]))")
+fi
+
+# Handle PDF: copy to assets/
+PDF_ASSET=""
+if [[ -n "$PDF_PATH" ]]; then
+    [[ -f "$PDF_PATH" ]] || { echo "Error: PDF not found: $PDF_PATH"; exit 1; }
+    mkdir -p assets
+    BASENAME="$(basename "$PDF_PATH")"
+    DEST="assets/$BASENAME"
+    if [[ -f "$DEST" ]]; then
+        NAME="${BASENAME%.*}"
+        EXT="${BASENAME##*.}"
+        CTR=1
+        while [[ -f "$DEST" ]]; do
+            DEST="assets/${NAME}_${CTR}.${EXT}"
+            CTR=$((CTR + 1))
+        done
+    fi
+    cp "$PDF_PATH" "$DEST"
+    PDF_ASSET="$DEST"
+fi
+
+# Create entry via Python (all data passed through env vars)
+export WU_CONTENT="$CONTENT"
+export WU_MOOD="$MOOD"
+export WU_GIF="$GIF_URL"
+export WU_PDF="$PDF_ASSET"
+export WU_LINK="$LINK_URL"
+export WU_REPLY="$REPLY_TO"
+export WU_TAGS="$TAGS_JSON"
+
+ENTRY_ID=$(python3 << 'PYEOF'
+import json, os, sys, uuid
+from datetime import datetime, timezone
+
+content = os.environ["WU_CONTENT"]
+mood = os.environ.get("WU_MOOD") or None
+gif = os.environ.get("WU_GIF") or None
+link = os.environ.get("WU_LINK") or None
+pdf = os.environ.get("WU_PDF") or None
+reply_to = os.environ.get("WU_REPLY") or None
+tags = json.loads(os.environ.get("WU_TAGS", "[]"))
+
+entry_id = uuid.uuid4().hex[:8]
+now = datetime.now(timezone.utc)
+
+# Entry type
+entry_type = "post"
+if mood: entry_type = "mood"
+elif reply_to: entry_type = "reply"
+elif link: entry_type = "link"
+
+entry = {
+    "id": entry_id,
+    "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "type": entry_type,
+    "content": content,
+    "mood": mood,
+    "links": [],
+    "attachments": [],
+    "replyTo": reply_to,
+    "tags": tags,
+}
+
+if link:
+    title = link.rstrip("/").split("/")[-1] or link
+    entry["links"].append({"url": link, "title": title})
+
+if gif:
+    entry["attachments"].append({"type": "gif", "url": gif})
+
+if pdf:
+    entry["attachments"].append({"type": "pdf", "url": pdf, "title": os.path.basename(pdf)})
+
+# Today in UTC
+today = now.strftime("%Y-%m-%d")
+day_file = f"data/entries/{today}.json"
+os.makedirs("data/entries", exist_ok=True)
+
+entries = []
+if os.path.exists(day_file):
+    with open(day_file) as f:
+        entries = json.load(f)
+
+entries.append(entry)
+
+with open(day_file, "w") as f:
+    json.dump(entries, f, indent=2)
+
+# Update manifest
+manifest = []
+if os.path.exists("data/index.json"):
+    with open("data/index.json") as f:
+        manifest = json.load(f)
+
+day_rec = next((m for m in manifest if m["date"] == today), None)
+times = [datetime.fromisoformat(e["ts"].replace("Z","+00:00")) for e in entries]
+
+if day_rec:
+    day_rec["count"] = len(entries)
+    day_rec["firstEntry"] = min(times).strftime("%H:%M")
+    day_rec["lastEntry"] = max(times).strftime("%H:%M")
+else:
+    manifest.append({
+        "date": today,
+        "count": len(entries),
+        "firstEntry": min(times).strftime("%H:%M"),
+        "lastEntry": max(times).strftime("%H:%M"),
+    })
+    manifest.sort(key=lambda x: x["date"], reverse=True)
+
+with open("data/index.json", "w") as f:
+    json.dump(manifest, f, indent=2)
+
+print(entry_id)
+PYEOF
+)
+
+echo "Created entry $ENTRY_ID"
+
+# Git
+git add data/ assets/
+PREVIEW="${CONTENT:0:50}"
+git commit -m "whatsup: $PREVIEW"
+git push
+
+echo "Pushed."

@@ -1,0 +1,45 @@
+[
+  {
+    "id": "17799fa6",
+    "ts": "2026-02-09T14:27:03Z",
+    "type": "mood",
+    "content": "Deep work session on the new project",
+    "mood": "focused",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": [
+      "productivity"
+    ]
+  },
+  {
+    "id": "e0b01368",
+    "ts": "2026-02-09T15:27:03Z",
+    "type": "link",
+    "content": "Great paper on attention mechanisms",
+    "mood": null,
+    "links": [
+      {
+        "url": "https://arxiv.org/abs/1706.03762",
+        "title": "Attention Is All You Need"
+      }
+    ],
+    "attachments": [],
+    "replyTo": null,
+    "tags": [
+      "research",
+      "ml"
+    ]
+  },
+  {
+    "id": "f7bb624e",
+    "ts": "2026-02-09T16:26:33Z",
+    "type": "post",
+    "content": "Hello world!",
+    "mood": null,
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
+  }
+]
