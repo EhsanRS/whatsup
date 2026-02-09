@@ -310,9 +310,10 @@ const WG = {
     const bio = this.config.bio ? this.esc(this.config.bio) : '';
 
     let gifUrl = null;
+    this.sidebarGifEntryId = null;
     if (moodEntry && moodEntry.attachments && moodEntry.attachments.length) {
       const gifAtt = moodEntry.attachments.find(a => a.type === 'gif' || a.type === 'image');
-      if (gifAtt) gifUrl = this.giphyDirect(gifAtt.url);
+      if (gifAtt) { gifUrl = this.giphyDirect(gifAtt.url); this.sidebarGifEntryId = moodEntry.id; }
     }
 
     let html = '<aside class="mood-sidebar">';
@@ -397,10 +398,12 @@ const WG = {
       });
     }
 
+    const skipGif = entry.id === this.sidebarGifEntryId;
     if (entry.attachments && entry.attachments.length) {
       card += '<div class="attachment">';
       entry.attachments.forEach(a => {
         if (a.type === 'gif' || a.type === 'image') {
+          if (skipGif) return;
           const url = this.giphyDirect(a.url);
           card += '<img src="' + this.esc(url) + '" alt="" class="gif-embed" loading="lazy">';
         } else if (a.type === 'pdf') {
