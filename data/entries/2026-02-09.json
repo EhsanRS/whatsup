@@ -41,5 +41,21 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "110b6bb5",
+    "ts": "2026-02-09T17:12:28Z",
+    "type": "mood",
+    "content": "Vibing",
+    "mood": "creative",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHFnbWEwbXQ4NnFtbGc4N2c0ajQxaDVnN3p6MzRyZTNwdGx3bGhzZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gVsmn4qdyBn1Bra2tN/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
