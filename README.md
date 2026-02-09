@@ -163,6 +163,7 @@ Works with any static hosting (Netlify, Vercel, Cloudflare Pages, S3, etc.) -- j
 ```
 whatsup              # CLI script (bash)
 gui.py               # Desktop GUI (tkinter)
+webgui.py            # Web GUI (stdlib http.server, port 9000)
 index.html           # App shell
 app.js               # Frontend rendering engine
 style.css            # Styles (IBM retro light theme)
@@ -212,6 +213,30 @@ Features:
 - **Keyboard shortcuts** -- `Ctrl+Enter` to post, `Escape` to clear/cancel
 
 The GUI calls the `whatsup` CLI via subprocess for all write operations, so no logic is duplicated.
+
+## Web GUI
+
+A browser-based GUI that runs on `localhost:9000`. No external dependencies -- uses only Python's stdlib `http.server`.
+
+```bash
+# Launch the web GUI (opens browser automatically)
+python3 webgui.py
+```
+
+Runs alongside `./whatsup --serve` (port 8000) without conflict.
+
+Features:
+
+- **Same IBM retro theme** -- reuses `style.css` directly
+- **Compose panel** -- write posts with mood, tags, links, replies, and GIF URLs
+- **Timeline view** -- full entry cards with mood badges, links, attachments, and tags
+- **Edit & delete** -- each entry has edit/delete buttons; edit populates the compose form
+- **Date navigation** -- dropdown picker and prev/next buttons
+- **Status bar** -- shows post results and errors, auto-clears after 5 seconds
+- **Keyboard shortcuts** -- `Ctrl+Enter` to post, `Escape` to clear/cancel
+- **API endpoints** -- GET `/api/config`, `/api/manifest`, `/api/entries?date=YYYY-MM-DD`; POST `/api/post`, `/api/edit`, `/api/delete`
+
+All write operations delegate to the `whatsup` CLI via subprocess, same as the desktop GUI.
 
 ## Requirements
 
