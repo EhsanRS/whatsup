@@ -162,6 +162,7 @@ Works with any static hosting (Netlify, Vercel, Cloudflare Pages, S3, etc.) -- j
 
 ```
 whatsup              # CLI script (bash)
+gui.py               # Desktop GUI (tkinter)
 index.html           # App shell
 app.js               # Frontend rendering engine
 style.css            # Styles (IBM retro light theme)
@@ -190,10 +191,33 @@ The visual design draws from the IBM Model M keyboard era -- warm cream backgrou
 | Links      | Classic blue | `#2a5aa7` |
 | Borders    | Warm beige | `#d9d0c1` |
 
+## Desktop GUI
+
+A tkinter desktop GUI wraps the CLI for a friendlier experience on Windows (WSL2), macOS, or Linux.
+
+```bash
+# Launch the GUI
+python3 gui.py
+```
+
+Requires `python3-tk` (on Ubuntu/Debian: `sudo apt install python3-tk`).
+
+Features:
+
+- **Compose area** -- write posts with mood, tags, links, replies, GIF URLs, and PDF attachments
+- **Timeline view** -- scrollable feed of entries for the selected day, styled with the same IBM retro theme
+- **Edit & delete** -- click any entry ID to edit or delete it via a context menu
+- **Date navigation** -- dropdown picker and prev/next buttons to browse past days
+- **Server management** -- start/stop the local preview server and auto-open the browser
+- **Keyboard shortcuts** -- `Ctrl+Enter` to post, `Escape` to clear/cancel
+
+The GUI calls the `whatsup` CLI via subprocess for all write operations, so no logic is duplicated.
+
 ## Requirements
 
 - Bash
 - Python 3 (for the CLI -- entry creation, manifest updates, local server)
+- Python 3 tkinter (`python3-tk` package) -- for the desktop GUI
 - Git
 - A modern web browser
 
