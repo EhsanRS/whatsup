@@ -75,7 +75,7 @@ const App = {
         : '<div class="empty-state"><p>No entries for this day.</p></div>';
     } else {
       timeline += '<div class="timeline">';
-      entries.forEach(e => { timeline += this.entryHTML(e); });
+      [...entries].reverse().forEach(e => { timeline += this.entryHTML(e); });
       timeline += '</div>';
     }
 
@@ -198,9 +198,10 @@ const App = {
     const moodName = moodEntry ? this.esc(moodEntry.mood) : 'no mood set';
 
     let gifUrl = null;
+    this.sidebarGifEntryId = null;
     if (moodEntry && moodEntry.attachments && moodEntry.attachments.length) {
       const gifAtt = moodEntry.attachments.find(a => a.type === 'gif' || a.type === 'image');
-      if (gifAtt) gifUrl = this.giphyDirect(gifAtt.url);
+      if (gifAtt) { gifUrl = this.giphyDirect(gifAtt.url); this.sidebarGifEntryId = moodEntry.id; }
     }
 
     const name = this.config.name ? this.esc(this.config.name) : '';
@@ -284,10 +285,12 @@ const App = {
     }
 
     // Attachments
+    const skipGif = entry.id === this.sidebarGifEntryId;
     if (entry.attachments && entry.attachments.length) {
       card += '<div class="attachment">';
       entry.attachments.forEach(a => {
         if (a.type === 'gif' || a.type === 'image') {
+          if (skipGif) return;
           const url = this.giphyDirect(a.url);
           card += '<img src="' + this.esc(url) + '" alt="' + this.esc(a.title || '') + '" class="gif-embed" loading="lazy">';
         } else if (a.type === 'pdf') {
