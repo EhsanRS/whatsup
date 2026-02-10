@@ -42,5 +42,21 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "b7c70b35",
+    "ts": "2026-02-10T11:50:56Z",
+    "type": "mood",
+    "content": "R kernel crashed, oom. Moving to our HPC",
+    "mood": "frustrated",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1pbmtsM2FwNm51N21tOGIwMXBxbjQ5M3F3c203d3NtdzdvMnZqMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nF4qNSCzQNsXhGn7aw/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
