@@ -10,9 +10,10 @@ const App = {
 
   async init() {
     try {
+      const cb = '?_=' + Date.now();
       const [configRes, manifestRes] = await Promise.all([
-        fetch('config.json').then(r => r.ok ? r.json() : null),
-        fetch('data/index.json').then(r => r.ok ? r.json() : [])
+        fetch('config.json' + cb).then(r => r.ok ? r.json() : null),
+        fetch('data/index.json' + cb).then(r => r.ok ? r.json() : [])
       ]);
       this.config = configRes || { name: 'WhatsUp', bio: '', avatar: '', links: [], timezone: 'UTC' };
       this.manifest = manifestRes;
@@ -42,9 +43,8 @@ const App = {
   },
 
   async loadDay(date) {
-    if (this.cache[date]) return this.cache[date];
     try {
-      const r = await fetch(`data/entries/${date}.json`);
+      const r = await fetch(`data/entries/${date}.json?_=${Date.now()}`);
       const entries = r.ok ? await r.json() : [];
       this.cache[date] = entries;
       return entries;

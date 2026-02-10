@@ -750,6 +750,7 @@ class WhatsUpHandler(http.server.SimpleHTTPRequestHandler):
         data = json.dumps(obj).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
