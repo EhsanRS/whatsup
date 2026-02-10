@@ -31,5 +31,16 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "f0130e5b",
+    "ts": "2026-02-10T11:25:45Z",
+    "type": "mood",
+    "content": "Running experiment 1 for today with the HDCA data",
+    "mood": "focused",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
   }
 ]
