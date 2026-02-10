@@ -107,5 +107,16 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "dfa0b4bd",
+    "ts": "2026-02-10T14:27:08Z",
+    "type": "mood",
+    "content": "Short 15 min break",
+    "mood": "tired",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
   }
 ]
