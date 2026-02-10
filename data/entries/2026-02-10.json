@@ -85,5 +85,16 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "c500791c",
+    "ts": "2026-02-10T12:55:29Z",
+    "type": "mood",
+    "content": "Skipping lunch today. Back to the grind",
+    "mood": "focused",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
   }
 ]
