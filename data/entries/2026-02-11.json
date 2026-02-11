@@ -73,5 +73,21 @@
     ],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "eef8234a",
+    "ts": "2026-02-11T17:16:24Z",
+    "type": "mood",
+    "content": "Today was literally this the entire day",
+    "mood": "frustrated",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1pbmtsM2FwNm51N21tOGIwMXBxbjQ5M3F3c203d3NtdzdvMnZqMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nF4qNSCzQNsXhGn7aw/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
