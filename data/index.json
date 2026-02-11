@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-02-11",
+    "count": 1,
+    "firstEntry": "10:01",
+    "lastEntry": "10:01"
+  },
+  {
     "date": "2026-02-10",
     "count": 16,
     "firstEntry": "10:30",
