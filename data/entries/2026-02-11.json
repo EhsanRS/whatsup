@@ -57,5 +57,21 @@
     ],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "f32a8799",
+    "ts": "2026-02-11T12:13:16Z",
+    "type": "mood",
+    "content": "Today is one of those days huh, waiting for things to run and complete. Everything takes agesssssssssssss.",
+    "mood": "tired",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExam9uenR2eXN4dnhueG1xamFmc21hc2pjYXFrczhpcGowcHFma3JtcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4oBwVbdxOFtR3HqIof/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
