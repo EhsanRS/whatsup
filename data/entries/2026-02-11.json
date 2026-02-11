@@ -25,5 +25,16 @@
     ],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "daefdd14",
+    "ts": "2026-02-11T10:51:16Z",
+    "type": "mood",
+    "content": "Spilled coffee",
+    "mood": "frustrated",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
   }
 ]
