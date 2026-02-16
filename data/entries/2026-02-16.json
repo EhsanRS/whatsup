@@ -9,5 +9,21 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "3c862a82",
+    "ts": "2026-02-16T12:13:45Z",
+    "type": "post",
+    "content": "What if things just worked?",
+    "mood": null,
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1pbmtsM2FwNm51N21tOGIwMXBxbjQ5M3F3c203d3NtdzdvMnZqMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nF4qNSCzQNsXhGn7aw/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
