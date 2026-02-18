@@ -25,5 +25,16 @@
     ],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "07f4fdd8",
+    "ts": "2026-02-18T12:24:26Z",
+    "type": "mood",
+    "content": "Locking in now",
+    "mood": "focused",
+    "links": [],
+    "attachments": [],
+    "replyTo": null,
+    "tags": []
   }
 ]
