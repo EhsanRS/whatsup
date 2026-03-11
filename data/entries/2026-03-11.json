@@ -1,0 +1,18 @@
+[
+  {
+    "id": "b086c213",
+    "ts": "2026-03-11T10:28:42Z",
+    "type": "mood",
+    "content": "Good morning. Today we will make some good progress.",
+    "mood": "excited",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHFnbWEwbXQ4NnFtbGc4N2c0ajQxaDVnN3p6MzRyZTNwdGx3bGhzZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gVsmn4qdyBn1Bra2tN/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
+  }
+]
