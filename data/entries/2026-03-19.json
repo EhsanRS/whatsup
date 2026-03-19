@@ -9,5 +9,21 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "9c1e77bd",
+    "ts": "2026-03-19T11:34:47Z",
+    "type": "mood",
+    "content": "GOOD MORNING. Today is going on great. A bit tough to find motivation to look at my data, so doing some other work first. What if it does not make sense after all?",
+    "mood": "thinking",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmZmOW5vNXlkYnR3N2dlNjltc2VxZGExdG1lbHp0Nnk4ZWNveWF3dCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3oz8xLlw6GHVfokaNW/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
