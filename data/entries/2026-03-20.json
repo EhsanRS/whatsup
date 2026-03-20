@@ -9,5 +9,21 @@
     "attachments": [],
     "replyTo": null,
     "tags": []
+  },
+  {
+    "id": "a578194b",
+    "ts": "2026-03-20T12:06:53Z",
+    "type": "mood",
+    "content": "Business going good today. Wow. Occasional wins are nice",
+    "mood": "excited",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnpqb3R1dmJkeXlieWJmY2R5c3hhOGU4ZHNvbG5xdzV5emVsMngzZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nXxOjZrbnbRxS/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
   }
 ]
