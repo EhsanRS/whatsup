@@ -1,0 +1,18 @@
+[
+  {
+    "id": "53386fc1",
+    "ts": "2026-03-31T16:02:04Z",
+    "type": "mood",
+    "content": "Still working hard but it is hardly working",
+    "mood": "tired",
+    "links": [],
+    "attachments": [
+      {
+        "type": "gif",
+        "url": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1pbmtsM2FwNm51N21tOGIwMXBxbjQ5M3F3c203d3NtdzdvMnZqMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nF4qNSCzQNsXhGn7aw/giphy.gif"
+      }
+    ],
+    "replyTo": null,
+    "tags": []
+  }
+]
